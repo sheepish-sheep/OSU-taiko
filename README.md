@@ -164,3 +164,24 @@ python model/inference.py \
 | `--min_gap_frames`  | No       | `5`          | Minimum frames between notes to avoid double triggers                                                                |
 | `--hp`              | No       | `5`          | HP drain rate 0–10. Lower values are more forgiving                                                                  |
 | `--transformer`     | No       | `None`       | Path to transformer checkpoint for position prediction                                                               |
+
+### Recommended settings
+
+The following settings produced good results on tested songs. Without these, 100 notes may appear within the span of one second. Note that these settings are tuned for the `hard` model and may need adjustment for `easy`, `normal`, or `insane`.
+
+```bash
+python model/inference.py \
+  --audio path/to/song.mp3 \
+  --model trained_model/hard \
+  --out path/to/output.osu \
+  --transformer trained_model/transformer.pt \
+  --threshold 0.65 \
+  --min_gap_frames 25 \
+  --hp 2 \
+  --title "Song Title" \
+  --diff "Hard"
+```
+
+- `--threshold 0.65` — filters out low-confidence notes without being too sparse
+- `--min_gap_frames 25` — prevents notes from being placed too close together
+- `--hp 2` — forgiving HP drain for AI-generated maps
